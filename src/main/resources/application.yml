@@ -1,0 +1,24 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /parking
+spring:
+  datasource:
+    username: admin
+    password: yangwei
+    url: jdbc:mysql://localhost/sell?characterEncoding=utf-8&useSSL=false&serverTimeZone=UTC&useOldAliasMetadataBehavior=true
+    driver-class-name: com.mysql.jdbc.Driver
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ./logs
+
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+
+app:
+  appSecret: 1ecd0107d68488ed971b7441d7dfd5da
+  parkInfoListUrl: http://open.6api.net/parking/ParkInfoList
+  nearbyParkInfoUrl: http://open.6api.net/parking/NearbyParkInfoList
+  queryParkInfoUrl: http://open.6api.net/parking/queryParkInfoById
