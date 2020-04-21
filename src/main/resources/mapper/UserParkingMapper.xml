@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.park.mapper.UserParkingMapper">
+    <select id="getUserParking" resultType="com.park.entity.UserParking">
+        SELECT *
+        FROM user_parking
+        WHERE
+        (status = 1 OR status = 2)
+        AND user_id = #{user_id}
+        AND park_id = #{park_id}
+    </select>
+
+    <select id="getList" resultType="map">
+        SELECT
+        pi.*,
+        uk.`status`,
+        uk.in_time,
+        uk.out_time,
+        uk.stay_time,
+        uk.created_time
+        FROM
+        user_parking uk
+        LEFT JOIN parking_info pi ON pi.park_id = uk.park_id
+        LEFT JOIN `user` u ON u.user_id = uk.user_id
+        <where>
+            <choose>
+                <when test="status != 2">
+                    (uk.status = 1 OR uk.status = 0)
+                </when>
+                <otherwise>
+                    uk.status = 2
+                </otherwise>
+            </choose>
+            <if test="nickname != null">
+                AND u.nickname = #{nickname}
+            </if>
+        </where>
+        ORDER BY created_time DESC
+    </select>
+</mapper>

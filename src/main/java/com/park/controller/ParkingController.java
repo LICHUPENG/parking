@@ -60,11 +60,11 @@ public class ParkingController {
     }
 
     @GetMapping("parking_info")
-    public Map<String, Object> getInfo(String parkId, String parkUUId) {
+    public Map<String, Object> getInfo(String parkId) {
         if (StringUtils.isBlank(parkId)) {
             throw new AppException("停车场Id必填!", AppException.FORM_INVALID);
         }
-        ParkingInfo info = this.parkingService.getInfo(parkId, parkUUId);
+        ParkingInfo info = this.parkingService.getInfo(parkId);
         if (info == null || info.getParkId() == null) {
             throw new AppException("请求失败，请重新尝试！", AppException.FORM_INVALID);
         }

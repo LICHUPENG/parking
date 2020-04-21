@@ -1,8 +1,8 @@
 package com.park.entity;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -10,10 +10,11 @@ import java.util.List;
 public class ParkingInfo {
 
     /** 停车场Id */
+    @Id
     private Integer parkId;
 
     /** 停车场UUID */
-    private String parkUUId;
+    private String parkUuid;
 
     /** 停车场名称 */
     private String name;
