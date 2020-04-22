@@ -15,7 +15,8 @@ logging:
     path: ./logs
 
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.park.entity            # 定义所有操作类的别名所在包
+  mapper-locations: classpath:mapper/**/*.xml     # 所有的mapper映射文件
   configuration:
     map-underscore-to-camel-case: false
 

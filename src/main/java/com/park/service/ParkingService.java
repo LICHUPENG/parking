@@ -3,6 +3,7 @@ package com.park.service;
 import com.alibaba.fastjson.JSONObject;
 import com.park.Dao.ParkingInfoDao;
 import com.park.Dao.UserDao;
+import com.park.Dao.UserParkingDao;
 import com.park.common.AppException;
 import com.park.common.Func;
 import com.park.controller.vo.InfoForm;
@@ -13,7 +14,6 @@ import com.park.entity.ParkingInfo;
 import com.park.entity.User;
 import com.park.entity.UserParking;
 import com.park.mapper.ParkingInfoMapper;
-import com.park.mapper.UserMapper;
 import com.park.mapper.UserParkingMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -72,6 +72,8 @@ public class ParkingService {
     private final UserDao userDao;
 
     private final UserParkingMapper userParkingMapper;
+
+    private final UserParkingDao userParkingDao;
 
     /**
      * 请求接口
@@ -249,7 +251,7 @@ public class ParkingService {
         }
         User user = this.userDao.getUserByNickname(form.getNickname());
 
-        UserParking parking = this.userParkingMapper.getUserParking(user.getUser_id(), form.getParkId());
+        UserParking parking = this.userParkingDao.getUserParking(user.getUser_id(), form.getParkId());
         if (parking != null) {
             throw new AppException("请先处理未完成订单", AppException.FORM_INVALID);
         }
@@ -331,7 +333,7 @@ public class ParkingService {
     }
 
     public List<Map<String, Object>> getList(ListForm form) {
-        return this.userParkingMapper.getList(form.getStatus(), form.getNickname())
+        return this.userParkingDao.getList(form.getStatus(), form.getNickname())
                 .stream()
                 .peek(map -> {
                     switch ((Integer) map.get("status")) {

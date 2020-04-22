@@ -2,6 +2,10 @@ package com.park.common;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -101,5 +105,46 @@ public class Func {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Date date = new Date(dateTime);
         return sdf.format(date);
+    }
+
+    /**
+     * Bean对象转换成Map
+     */
+    public static Map<String, Object> beanToMap(Object obj) {
+        return Func.beanToMap(obj, false);
+    }
+
+    /**
+     * Bean对象转换成Map
+     *
+     * @param isExcludeEmpty 当检测到空字符串，是否将其变为null
+     */
+    public static Map<String, Object> beanToMap(Object obj, boolean isExcludeEmpty) {
+        if (obj == null) {
+            return null;
+        }
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());
+            PropertyDescriptor[] proDesc = beanInfo.getPropertyDescriptors();
+            for (PropertyDescriptor pd : proDesc) {
+                String key = pd.getName();
+                if (key.compareToIgnoreCase("class") == 0) {
+                    continue;
+                }
+
+                Method getter = pd.getReadMethod();
+                Object value = getter != null ? getter.invoke(obj) : null;
+                map.put(key, value);
+                if (isExcludeEmpty)
+                    if (value != null && value instanceof String && "".equals((value + "").trim()))
+                        map.put(key, null);
+            }
+        } catch (Exception e) {
+            throw new AppException("数据转换失败!", AppException.SYSTEM);
+        }
+
+        return map;
     }
 }
