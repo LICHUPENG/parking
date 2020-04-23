@@ -39,9 +39,12 @@ public class UserController {
         userParams.setNickname(form.getNickname());
         List<User> users = this.userMapper.select(userParams);
         if (users.isEmpty()) {
+            int now = Func.getTime();
             userParams.setUser_id(FastuuidUtil.genUUID());
             userParams.setAvatar_url(form.getAvatarUrl());
             userParams.setCity(form.getCity());
+            userParams.setCreated_time(now);
+            userParams.setUpdate_time(now);
             this.userMapper.insertSelective(userParams);
             return Func.successMap(userParams);
         }

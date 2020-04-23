@@ -356,6 +356,7 @@ public class ParkingService {
                         default:
                             map.put("status", "未知状态");
                     }
+                    map.put("created_time", Func.timeFormatted((Integer) map.get("created_time")));
                 }).collect(Collectors.toList());
     }
 
