@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @RestController
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -24,7 +26,10 @@ public class ParkController {
     @GetMapping("book")
     public Map<String, Object> book(@Validated ParkForm form) {
         this.parkingService.book(form);
-        return Func.successMap();
+        Map<String, Object> map = new HashMap<>(2);
+        int i = new Random().nextInt(100);
+        map.put("num", i);
+        return Func.successMap(map);
     }
 
     @GetMapping("cancel_record")
@@ -49,5 +54,11 @@ public class ParkController {
     public Map<String, Object> list(@Validated ListForm form) {
         List<Map<String, Object>> list = this.parkingService.getList(form);
         return Func.successMap(list);
+    }
+
+    @GetMapping("delete")
+    public Map<String, Object> delete(@Validated ParkForm form) {
+        this.parkingService.delete(form);
+        return Func.successMap();
     }
 }

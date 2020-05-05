@@ -17,5 +17,9 @@ public class UserParking {
 
     private Float stay_time;
 
+        private String region;
+
+    private Integer port;
+
     private Integer created_time;
 }

@@ -261,6 +261,8 @@ public class ParkingService {
         userParking.setParkId(parkingInfo.getParkId());
         userParking.setStatus(2);
         userParking.setCreated_time(Func.getTime());
+        userParking.setPort(form.getPort());
+        userParking.setRegion(form.getRegion());
         this.userParkingMapper.insertSelective(userParking);
     }
 
@@ -358,6 +360,19 @@ public class ParkingService {
                     }
                     map.put("created_time", Func.timeFormatted((Integer) map.get("created_time")));
                 }).collect(Collectors.toList());
+    }
+
+    public void delete(ParkForm form) {
+        User user = this.userDao.getUserByNickname(form.getNickname());
+
+        if (form.getOut_time() == null) {
+            throw new AppException("不能删除未完成订单", AppException.FORM_INVALID);
+        }
+        UserParking userParking = new UserParking();
+        userParking.setUser_id(user.getUser_id());
+        userParking.setParkId(form.getParkId());
+        userParking.setOut_time(form.getOut_time());
+        this.userParkingMapper.delete(userParking);
     }
 
 }

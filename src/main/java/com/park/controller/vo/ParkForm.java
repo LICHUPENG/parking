@@ -13,4 +13,10 @@ public class ParkForm {
 
     @NotBlank(message = "请填写昵称")
     private String nickname;
+
+    private Integer port;
+
+    private String region;
+
+    private Integer out_time;
 }
